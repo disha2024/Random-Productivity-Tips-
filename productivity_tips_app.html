@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Productivity Tips</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .tip-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .tip-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        #tip-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .tip-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            #tip-text {
+                font-size: 1.1rem;
+            }
+            
+            .tip-container {
+                padding: 20px;
+                min-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tip-number" id="tip-number">Tip 1 of 25</div>
+        <h1>🚀 Productivity Tips</h1>
+        <p class="subtitle">Boost your efficiency with proven strategies</p>
+        
+        <div class="tip-container">
+            <p id="tip-text">Click the button below to get your first productivity tip!</p>
+        </div>
+        
+        <button class="btn" onclick="generateTip()">Get New Tip</button>
+    </div>
+
+    <script>
+        const productivityTips = [
+            "Use the 2-minute rule: If something takes less than 2 minutes, do it immediately instead of adding it to your to-do list.",
+            "Try the Pomodoro Technique: Work for 25 minutes, then take a 5-minute break. Repeat 4 times, then take a longer break.",
+            "Start your day by tackling the most challenging task first when your energy is highest.",
+            "Keep a 'done' list alongside your to-do list to track your accomplishments and maintain motivation.",
+            "Use the 80/20 rule: Focus on the 20% of tasks that produce 80% of your results.",
+            "Batch similar tasks together to minimize context switching and improve efficiency.",
+            "Set specific time blocks for checking email instead of constantly monitoring your inbox.",
+            "Create a dedicated workspace that signals to your brain it's time to focus.",
+            "Use the 'Getting Things Done' method: capture everything, clarify what it means, organize by priority.",
+            "Take regular breaks to prevent burnout and maintain peak performance throughout the day.",
+            "Eliminate distractions by putting your phone in another room or using website blockers.",
+            "Plan your next day the evening before to start with clarity and purpose.",
+            "Use keyboard shortcuts and automation tools to speed up repetitive tasks.",
+            "Practice saying 'no' to commitments that don't align with your priorities.",
+            "Keep a water bottle nearby and stay hydrated to maintain cognitive function.",
+            "Use the 'touch it once' principle: when you pick up a task, complete it rather than setting it aside.",
+            "Create templates for recurring tasks to save time and ensure consistency.",
+            "Set artificial deadlines that are earlier than the real ones to avoid last-minute stress.",
+            "Use positive self-talk and visualization to maintain motivation during difficult tasks.",
+            "Organize your digital files with a clear folder structure and consistent naming conventions.",
+            "Take advantage of your natural energy rhythms by scheduling demanding work during your peak hours.",
+            "Use the 'Swiss cheese' method: poke holes in large projects by doing small, random tasks related to them.",
+            "Keep a notebook or app for capturing ideas and tasks as they occur to prevent mental overload.",
+            "Set up your environment the night before to reduce decision fatigue in the morning.",
+            "Use time-tracking apps to understand where your time actually goes versus where you think it goes."
+        ];
+
+        let currentTipIndex = -1;
+        let usedTips = [];
+
+        function generateTip() {
+            // If all tips have been used, reset the array
+            if (usedTips.length === productivityTips.length) {
+                usedTips = [];
+            }
+
+            // Get a random tip that hasn't been used
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * productivityTips.length);
+            } while (usedTips.includes(randomIndex));
+
+            usedTips.push(randomIndex);
+            currentTipIndex = randomIndex;
+
+            // Display the tip with a fade effect
+            const tipElement = document.getElementById('tip-text');
+            const tipNumberElement = document.getElementById('tip-number');
+            
+            tipElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                tipElement.textContent = productivityTips[randomIndex];
+                tipNumberElement.textContent = `Tip ${usedTips.length} of ${productivityTips.length}`;
+                tipElement.style.opacity = '1';
+            }, 150);
+        }
+
+        // Add smooth opacity transition
+        document.getElementById('tip-text').style.transition = 'opacity 0.3s ease';
+
+        // Generate first tip on load
+        window.addEventListener('load', generateTip);
+    </script>
+</body>
+</html>
